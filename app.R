@@ -139,15 +139,7 @@ ui <- navbarPage("Marta Ilundain",
 # Define server logic required to draw a histogram
 server <- function(input, output) {
   
-  datasetInput <- reactive({
-    switch(input$dataset,
-           "Carat" = Diamonds$Carat,
-           "Color" = Diamonds$Color,
-           "Clarity"=Diamonds$Clarity,
-           "Depth"=Diamonds$Depth,
-           "PricePerCt"=Diamonds$PricePerCt,
-           "TotalPrice"=Diamonds$TotalPrice)
-  })
+  datasetInput <- reactive(Diamonds)
   
   output$data <- renderTable({
     n <- nrow(Diamonds)
@@ -161,8 +153,8 @@ server <- function(input, output) {
     dfSummary(Diamonds)
   })
   
-  output$scatplot = 
-}
+  # output$scatplot 
 
+}
 # Run the application 
 shinyApp(ui = ui, server = server)
