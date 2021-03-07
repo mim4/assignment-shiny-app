@@ -1,6 +1,9 @@
 library(shiny)
 library(Stat2Data)
 require(summarytools)
+require(shinyjs)
+require(shinythemes)
+library(ggplot2)
 data("Diamonds")
 # Define UI for application that draws a histogram
 ui <- navbarPage("Marta Ilundain",
@@ -44,9 +47,9 @@ ui <- navbarPage("Marta Ilundain",
                               mainPanel(
                                   
                                 tableOutput("data")
-                                ),
+                                )
                             )
-                          ),
+                          )
                           ),
                  tabPanel("Summary",
                           fluidPage(
@@ -69,7 +72,7 @@ ui <- navbarPage("Marta Ilundain",
                               ),
                               mainPanel(
                               verbatimTextOutput("summary")
-                            ),
+                            )
                           )
                           )
                  ),
@@ -106,11 +109,15 @@ ui <- navbarPage("Marta Ilundain",
                               conditionalPanel(
                                 condition = "input.view == 'scatterplot'",
                                 
-                                selectInput("allvariables", "Variables",
+                                selectInput("allvariables1", "Variable 1 (x)",
                                             choices = c("Carat", "Depth", "PricePerCt","TotalPrice", "Clarity", "Color"),
-                                            selected = "Clarity",
+                                            selected = "Carat",
+                                            multiple = FALSE),
+                                selectInput("allvariables2", "Variable 2 (y)",
+                                            choices = c("Carat", "Depth", "PricePerCt","TotalPrice", "Clarity", "Color"),
+                                            selected = "Carat",
                                             multiple = FALSE)
-                              ),
+                              )
                               ),
                               mainPanel(
                                 conditionalPanel(
@@ -153,7 +160,26 @@ server <- function(input, output) {
     dfSummary(Diamonds)
   })
   
-  # output$scatplot 
+  output$boxplot <- renderPlot({
+    ggplot(data=Diamonds, aes_string( input$facvariables, Diamonds$TotalPrice)) + 
+      geom_boxplot(aes_string(fill = input$facvariables))+ ylab("Total Price") +
+      theme_bw() 
+  })
+  
+  output$histplot = renderPlot({
+    ggplot(data = Diamonds, aes_string(x = input$numvariables)) +
+      geom_histogram(bins = input$n_bins, fill = "royalblue", color="black") +
+      theme_bw()
+  })
+  
+  output$scatplot = renderPlot({
+    ggplot(data = Diamonds, aes_string(x= input$allvariables1, y= input$allvariables2)) +
+      geom_point() + theme_bw() +
+      geom_smooth(method=lm)
+  })
+  
+  
+  
 
 }
 # Run the application 
