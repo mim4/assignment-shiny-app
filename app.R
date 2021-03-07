@@ -20,13 +20,13 @@ ui <- navbarPage("Marta Ilundain",
                                   a sample of 351 diamonds"),
                                 p("In the first tab we can take a look to our data. There, 
                                   we can select how many observations can be displayed by
-                                  introducing a number and then clicking the button Update Table.
-                                  In the second tab, we can see a summary of our data which has been
+                                  introducing a number and then clicking the button Update Table."),
+                                p("In the second tab, we can see a summary of our data which has been
                                   generated using the dfSummary function of the summarytools package. 
-                                  In this tab, we can also see how our variables are defined.
-                                  In the last tab called Plots we can see histograms for the 
+                                  In this tab, we can also see how our variables are defined."),
+                                p(" In the last tab called Plots we can see histograms for the 
                                   quantitative variables and boxplots for the qualitative variables.
-                                  Also, we can do the scatterplot of two selected numerical variables
+                                  Also, we can do the scatterplot of two selected variables
                                   to see how they are related."),
                                 img(src = "diamond.png")
                               )
@@ -163,19 +163,20 @@ server <- function(input, output) {
   output$boxplot <- renderPlot({
     ggplot(data=Diamonds, aes_string( input$facvariables, Diamonds$TotalPrice)) + 
       geom_boxplot(aes_string(fill = input$facvariables))+ ylab("Total Price") +
-      theme_bw() 
+      theme_bw() + ggtitle("Boxplot in relationship to Total Price") 
   })
   
   output$histplot = renderPlot({
     ggplot(data = Diamonds, aes_string(x = input$numvariables)) +
       geom_histogram(bins = input$n_bins, fill = "royalblue", color="black") +
-      theme_bw()
+      theme_bw() + ggtitle("Histogram of numerical variables")
   })
   
   output$scatplot = renderPlot({
     ggplot(data = Diamonds, aes_string(x= input$allvariables1, y= input$allvariables2)) +
-      geom_point() + theme_bw() +
-      geom_smooth(method=lm)
+      geom_point(shape=18, color="chartreuse3", size = 3) + theme_bw() +
+      geom_smooth(method=lm, linetype="dashed",
+                  color="black", fill="blue") + ggtitle("Scatterplot of selected variables")
   })
   
   
