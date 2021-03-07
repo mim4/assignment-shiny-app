@@ -26,8 +26,9 @@ ui <- navbarPage("Marta Ilundain",
                                   In this tab, we can also see how our variables are defined."),
                                 p(" In the last tab called Plots we can see histograms for the 
                                   quantitative variables and boxplots for the qualitative variables.
-                                  Also, we can do the scatterplot of two selected variables
-                                  to see how they are related."),
+                                  Also, we can see the scatterplot of two selected variables
+                                  to see how they are related, and we can also see a linear regression
+                                  between the two selected variables. "),
                                 img(src = "diamond.png")
                               )
                             )
@@ -96,7 +97,7 @@ ui <- navbarPage("Marta Ilundain",
                                               choices = c("Carat", "Depth", "PricePerCt","TotalPrice"),
                                               selected = "Carat",
                                               multiple = FALSE),
-                                  sliderInput("n_bins", label = NULL, min = 2, max = 30, value = 10)
+                                  sliderInput("n_bins", label = NULL, min = 10, max = 50, value = 20)
                               ),
                               conditionalPanel(
                                 condition = "input.view == 'Boxplots'",
